@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "npx rollup -c"
+  },
+  "dependencies": {},
+  "name": "collection",
+  "version": "1.0.0",
+  "main": "rollup.config.js",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.0",
+    "rollup": "^3.21.0",
+    "tslib": "^2.5.0",
+    "typescript": "^5.0.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

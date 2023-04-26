@@ -6,7 +6,7 @@ import CryptoJS from "crypto-js";
 /**
  * GenerateFingerprint：根据浏览器特征生成浏览器指纹
  */
-export default class GenerateFingerprint implements Fingerprint {
+export class GenerateFingerprint implements Fingerprint {
   // 获取指纹
   getFinger(): string {
     const canvas = document.createElement("canvas");

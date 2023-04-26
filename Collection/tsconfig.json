@@ -13,6 +13,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true,
+    "suppressImplicitAnyIndexErrors": true,
     "paths": {
       "lodash": ["./node_modules/lodash-es"]
     }

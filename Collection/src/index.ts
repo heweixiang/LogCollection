@@ -32,8 +32,10 @@ function Collectioning(config: LogCollectionToolsConfigInterface) {
       ToolsConfig.collectionOnlineStatusTime = 1000 * 60 * 1;
     }
     // 清除上一次的定时器
-    localStorage.getItem("collection_timer") &&
+    if (localStorage.getItem("collection_timer")) {
       clearInterval(parseInt(localStorage.getItem("collection_timer") || "0"));
+      log.info("清除上一次的定时器");
+    }
     // 收集访问数据先执行一次再进入定时器
     collect.collectVisitData(ToolsConfig);
     const timer = setInterval(() => {
@@ -41,14 +43,14 @@ function Collectioning(config: LogCollectionToolsConfigInterface) {
     }, ToolsConfig.collectionOnlineStatusTime);
     localStorage.setItem("collection_timer", timer.toString());
   }
-  // 收集错误数据
-  if (ToolsConfig.isCollectionErrorData) {
-    collect.collectErrorData(ToolsConfig);
-  }
-  // 收集页面跳转数据
-  if (ToolsConfig.isCollectionVisitDataWhenJumpPage) {
-    collect.collectVisitDataWhenJumpPage(ToolsConfig);
-  }
+  // // 收集错误数据
+  // if (ToolsConfig.isCollectionErrorData) {
+  //   collect.collectErrorData(ToolsConfig);
+  // }
+  // // 收集页面跳转数据
+  // if (ToolsConfig.isCollectionVisitDataWhenJumpPage) {
+  //   collect.collectVisitDataWhenJumpPage(ToolsConfig);
+  // }
 }
 
 export default class LogCollectionTools {

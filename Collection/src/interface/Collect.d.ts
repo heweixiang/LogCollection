@@ -9,6 +9,10 @@ export interface CollectInterface {
   collectErrorData(config: LogCollectionToolsConfigInterface): void;
   // 收集页面跳转数据
   collectVisitDataWhenJumpPage(config: LogCollectionToolsConfigInterface): void;
+  // 收集状态并上传
+  collectStatusAndUpload(config: CollectBrowserDataInterface): void;
+  // 用户触发收集
+  collectUserTrigger(config: CollectUserDefinedInterface): void;
 }
 
 // 收集哪些数据
@@ -44,4 +48,16 @@ export interface CollectBrowserDataInterface {
   isJumpOut: boolean;
   // 跳出网站的页面
   jumpOutPage: string;
+}
+
+// 开发者定义收集
+export interface CollectUserDefinedInterface {
+  // 用户ID
+  userId: string;
+  // 触发事件
+  event: string;
+  // 触发描述
+  eventDesc: string;
+  // 携带数据
+  data: any;
 }

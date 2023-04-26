@@ -4,6 +4,8 @@
     "build": "npx rollup -c"
   },
   "dependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "@types/crypto-js": "^4.1.1",
     "@types/lodash": "^4.14.194"
   },

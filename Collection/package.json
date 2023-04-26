@@ -3,7 +3,10 @@
   "scripts": {
     "build": "npx rollup -c"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "@types/lodash": "^4.14.194"
+  },
   "name": "collection",
   "version": "1.0.0",
   "main": "rollup.config.js",

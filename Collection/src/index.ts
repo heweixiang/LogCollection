@@ -62,12 +62,11 @@ export default class LogCollectionTools {
     }
     if (!config || !config.isCollection) return;
     if (config.isCollection) {
-      LogCollectionToolsConfig.isCollection = config.isCollection;
-      // 赋值config
-      LogCollectionToolsConfig.isCollectionVisitData =
-        config.isCollectionVisitData;
-      LogCollectionToolsConfig.isCollectionErrorData =
-        config.isCollectionErrorData;
+      for (let key in config) {
+        if (config[key] !== undefined) {
+          LogCollectionToolsConfig[key] = config[key];
+        }
+      }
       LogCollectionToolsConfig.isInit = true;
       log.info("初始化配置", LogCollectionToolsConfig);
       Collectioning(LogCollectionToolsConfig);

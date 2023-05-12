@@ -7,14 +7,20 @@ import { LogCollectionToolsConfigInterface } from "../interface/LogCollectionToo
 import { send } from "./XHR2Ajax";
 
 export class Collect implements CollectInterface {
+
   // 由开发者触发埋点
   collectUserTrigger(_config: CollectUserDefinedInterface): void {
     throw new Error("Method not implemented.");
   }
+
+
   // 由系统埋点触发
   collectStatusAndUpload(browserData: CollectBrowserDataInterface): void {
     send("http://localhost:3000/collect", "POST", browserData);
   }
+
+
+
   collectVisitData(_config: LogCollectionToolsConfigInterface): void {
     // 循环询问在线状态
     const collectData: CollectBrowserDataInterface = {
@@ -24,6 +30,7 @@ export class Collect implements CollectInterface {
       fingerprint: "",
       isJumpOut: false,
       jumpOutPage: "",
+      jumpToPage: ""
     };
     // 网页跳转来源
     collectData.source = document.referrer;
@@ -39,6 +46,8 @@ export class Collect implements CollectInterface {
       this.collectStatusAndUpload(collectData);
     }
   }
+
+
   collectErrorData(_config: LogCollectionToolsConfigInterface): void {
     // 收集错误数据
     const collectData: CollectBrowserDataInterface = {
@@ -48,10 +57,13 @@ export class Collect implements CollectInterface {
       fingerprint: "",
       isJumpOut: false,
       jumpOutPage: "",
+      jumpToPage: ""
     };
 
     this.collectStatusAndUpload(collectData);
   }
+
+
   collectVisitDataWhenJumpPage(
     _config: LogCollectionToolsConfigInterface
   ): void {
@@ -63,6 +75,7 @@ export class Collect implements CollectInterface {
       fingerprint: "",
       isJumpOut: false,
       jumpOutPage: "",
+      jumpToPage: ""
     };
 
     this.collectStatusAndUpload(collectData);

@@ -38,7 +38,7 @@ export interface CollectDataInterface extends CollectBrowserDataInterface {
 export interface CollectBrowserDataInterface {
   // 来源 直接访问 | 来源链接（包括搜索引擎，暂不考虑别名）
   source: "直接访问" | string;
-  // 入口页面
+  // 访问页面
   entryPage: string;
   // 搜索词
   searchWord: string;
@@ -48,6 +48,8 @@ export interface CollectBrowserDataInterface {
   isJumpOut: boolean;
   // 跳出网站的页面
   jumpOutPage: string;
+  // 跳转到的页面
+  jumpToPage: string;
 }
 
 // 开发者定义收集
@@ -55,7 +57,7 @@ export interface CollectUserDefinedInterface {
   // 用户ID
   userId: string;
   // 触发事件
-  event: string;
+  eventId: string;
   // 触发描述
   eventDesc: string;
   // 携带数据

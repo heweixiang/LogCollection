@@ -23,7 +23,14 @@ function Collectioning(config: LogCollectionToolsConfigInterface) {
   const ToolsConfig: LogCollectionToolsConfigInterface = JSON.parse(
     JSON.stringify(config)
   );
-  ToolsConfig.fingerprint = generateFingerprint.getFinger();
+  // 从locastorage中获取fingerprint
+  if (localStorage.getItem("fingerprint")) {
+    ToolsConfig.fingerprint = localStorage.getItem("fingerprint") || "";
+  } else {
+    ToolsConfig.fingerprint = generateFingerprint.getFinger();
+    // 存入历史,如果该访客临时修改页可以将其认为是上次的访客,人为删除就算了(这个管不了)
+    localStorage.setItem("fingerprint", ToolsConfig.fingerprint);
+  }
   // 检测是否需要收集数据
   if (!ToolsConfig.isCollection) return;
   // 收集访问数据

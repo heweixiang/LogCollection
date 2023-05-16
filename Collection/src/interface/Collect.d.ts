@@ -13,53 +13,63 @@ export interface CollectInterface {
   collectStatusAndUpload(config: CollectBrowserDataInterface): void;
   // 用户触发收集
   collectUserTrigger(config: CollectUserDefinedInterface): void;
+
+  // 收集基本访问数据
+  collectBaseVisitData(
+    config: LogCollectionToolsConfigInterface
+  ): CollectBrowserDataInterface;
 }
 
 // 收集哪些数据
-export interface CollectDataInterface extends CollectBrowserDataInterface {
-  // 服务端收集
-  // 访问时间
-  visitTime: string;
-  // 地理位置
-  location: string;
-  // IP地址
-  ip: string;
-  // 访问设备
-  device: string | "PC" | "移动端";
-  // 新老访客
-  isNewVisitor: boolean;
-  // 访问时长
-  visitDuration: number;
-  // 访问页数
-  visitPage: number;
+export interface CollectDataInterface
+  extends CollectBrowserDataInterface,
+    CollectUserDefinedInterface {
+  // 开发者或自动收集
+  collectType: string;
 }
 
-// 客户端收集
+// 自动收集
 export interface CollectBrowserDataInterface {
-  // 来源 直接访问 | 来源链接（包括搜索引擎，暂不考虑别名）
-  source: "直接访问" | string;
-  // 访问页面
+  // 来源地址
+  source: string;
+  // 入口页面
   entryPage: string;
   // 搜索词
   searchWord: string;
   // 访客识别码
   fingerprint: string;
-  // 跳出网站
-  isJumpOut: boolean;
-  // 跳出网站的页面
-  jumpOutPage: string;
-  // 跳转到的页面
-  jumpToPage: string;
+  // 屏幕分辨率
+  screenResolution: string;
+  // 访问IP
+  ip: string;
+  // 用户UA
+  userAgent: string;
+  // 浏览器名称
+  browserName: string;
+  // 浏览器版本
+  browserVersion: string;
+  // 浏览器内核
+  browserKernel: string;
+  // 操作系统
+  os: string;
 }
 
 // 开发者定义收集
 export interface CollectUserDefinedInterface {
-  // 用户ID
-  userId: string;
-  // 触发事件
-  eventId: string;
-  // 触发描述
+  // 事件类型
+  eventType: string;
+  // 事件描述
   eventDesc: string;
-  // 携带数据
-  data: any;
+  // 事件名称
+  eventName: string;
+  // 触发元素
+  triggerElement: HTMLElement;
+  // 触发位置
+  triggerPosition: string;
+  // 触发时间(传入客户端时间戳,后端按需覆盖)
+  triggerTime: number;
+  // 用户信息
+  userInfo: string;
+  // 事件其它信息
+  eventOtherInfo: string;
 }

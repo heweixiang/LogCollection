@@ -5,6 +5,8 @@ import {
 } from "../interface/Collect";
 import { LogCollectionToolsConfigInterface } from "../interface/LogCollectionToolsConfig";
 import { send } from "./XHR2Ajax";
+import { Log } from "./Log";
+const CollectLog = new Log();
 import CollectAddress from "./CollectAddress";
 
 export class Collect implements CollectInterface {
@@ -14,41 +16,83 @@ export class Collect implements CollectInterface {
   }
 
   // 由系统埋点触发
-  collectStatusAndUpload(browserData: CollectBrowserDataInterface): void {
-    send("http://localhost:3000/collect", "POST", browserData);
+  async collectStatusAndUpload(browserData: CollectBrowserDataInterface) {
+    // 上传数据
+    // const formData = new FormData();
+    // formData.append("log", JSON.stringify(browserData));
+    // 设置提交地址
+    const url = "http://172.21.212.48:7777/test/saveLog";
+    // 将表单添加到页面并提交
+    if (document.getElementById("form")) {
+      document.body.removeChild(document.getElementById("form") as HTMLElement);
+      document.body.removeChild(
+        document.getElementsByName("CollectLog")[0] as HTMLElement
+      );
+    }
+    // 向页面添加一个name为CollectLog的iframe
+    const CollectLogIframe = document.createElement(
+      "iframe"
+    ) as unknown as HTMLIFrameElement;
+    CollectLogIframe.name = "CollectLog";
+    document.body.appendChild(CollectLogIframe as HTMLIFrameElement);
+    const form = document.createElement("form");
+    form.id = "form";
+    form.style.display = "none";
+    form.action = url;
+    form.method = "POST";
+    form.enctype = "multipart/form-data";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "log";
+    input.value = JSON.stringify(browserData);
+    form.appendChild(input);
+    document.body.appendChild(form);
+    // 不允许跳转
+    form.target = "CollectLog";
+    form.submit();
+    // 发送数据
+    // send(url, "POST", formData);
+
+    // send("http://172.21.212.48:7777/test/saveLog", "POST", data);
   }
 
-  collectVisitData(_config: LogCollectionToolsConfigInterface): void {
+  async collectVisitData(
+    _config: LogCollectionToolsConfigInterface
+  ): Promise<void> {
     // 循环询问在线状态
     const collectData: CollectBrowserDataInterface =
-      this.collectBaseVisitData(_config);
+      await this.collectBaseVisitData(_config);
     // 当前用户焦点是否在当前页面 焦点进行记录，否则不在页面视为跳出
     if (document.hasFocus()) {
       this.collectStatusAndUpload(collectData);
+    } else {
+      // CollectLog.info("状态失焦，判定未在线！");
     }
   }
 
-  collectErrorData(_config: LogCollectionToolsConfigInterface): void {
+  async collectErrorData(
+    _config: LogCollectionToolsConfigInterface
+  ): Promise<void> {
     // 收集错误数据
     const collectData: CollectBrowserDataInterface =
-      this.collectBaseVisitData(_config);
+      await this.collectBaseVisitData(_config);
 
     this.collectStatusAndUpload(collectData);
   }
 
-  collectVisitDataWhenJumpPage(
+  async collectVisitDataWhenJumpPage(
     _config: LogCollectionToolsConfigInterface
-  ): void {
+  ): Promise<void> {
     // 收集页面跳转数据
     const collectData: CollectBrowserDataInterface =
-      this.collectBaseVisitData(_config);
+      await this.collectBaseVisitData(_config);
 
     this.collectStatusAndUpload(collectData);
   }
 
-  collectBaseVisitData(
+  async collectBaseVisitData(
     _config: LogCollectionToolsConfigInterface
-  ): CollectBrowserDataInterface {
+  ): Promise<CollectBrowserDataInterface> {
     const collectData: CollectBrowserDataInterface = {
       // 来源地址
       source: "",
@@ -86,7 +130,7 @@ export class Collect implements CollectInterface {
     collectData.screenResolution =
       window.screen.height + "×" + window.screen.width;
     // 访问IP
-    collectData.ip = CollectAddress();
+    collectData.ip = await CollectAddress();
     // 用户UA
     collectData.userAgent = navigator.userAgent;
     // 浏览器名称

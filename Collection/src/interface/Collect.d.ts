@@ -17,7 +17,7 @@ export interface CollectInterface {
   // 收集基本访问数据
   collectBaseVisitData(
     config: LogCollectionToolsConfigInterface
-  ): CollectBrowserDataInterface;
+  ): Promise<CollectBrowserDataInterface>;
 }
 
 // 收集哪些数据

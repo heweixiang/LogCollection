@@ -8,13 +8,16 @@
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@types/crypto-js": "^4.1.1",
     "@types/lodash": "^4.14.194",
+    "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
+    "jquery": "^3.7.0",
     "rollup-plugin-delete": "^2.0.0"
   },
   "name": "collection",
   "version": "1.0.0",
   "main": "rollup.config.js",
   "devDependencies": {
+    "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-typescript": "^11.1.0",
     "rollup": "^3.21.0",
     "tslib": "^2.5.0",

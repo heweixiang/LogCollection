@@ -4,7 +4,7 @@ import { Log } from "./model/Log";
 import { Collect } from "./model/Collect";
 import { LogCollectionToolsConfigInterface } from "./interface/LogCollectionToolsConfig";
 const generateFingerprint = new GenerateFingerprint();
-const log = new Log();
+const CollectLog = new Log();
 const collect = new Collect();
 
 // 一下配置为收集数据的配置
@@ -14,12 +14,14 @@ var LogCollectionToolsConfig: LogCollectionToolsConfigInterface = {
   isCollectionVisitData: true,
   isCollectionErrorData: true,
   // 默认1分钟收集一次在线状态(不允许小于1分钟)
-  collectionOnlineStatusTime: 1000 * 60 * 1,
+  collectionOnlineStatusTime: 1000 * 10 * 1,
   isCollectionVisitDataWhenJumpPage: true,
   fingerprint: "",
 };
 
 function Collectioning(config: LogCollectionToolsConfigInterface) {
+  // clog执行收集
+  CollectLog.info("执行收集", config);
   const ToolsConfig: LogCollectionToolsConfigInterface = JSON.parse(
     JSON.stringify(config)
   );
@@ -35,13 +37,13 @@ function Collectioning(config: LogCollectionToolsConfigInterface) {
   if (!ToolsConfig.isCollection) return;
   // 收集访问数据
   if (ToolsConfig.isCollectionVisitData) {
-    if (ToolsConfig.collectionOnlineStatusTime < 1000 * 60 * 1) {
-      ToolsConfig.collectionOnlineStatusTime = 1000 * 60 * 1;
-    }
+    // if (ToolsConfig.collectionOnlineStatusTime < 1000 * 60 * 1) {
+    //   ToolsConfig.collectionOnlineStatusTime = 1000 * 60 * 1;
+    // }
     // 清除上一次的定时器
     if (localStorage.getItem("collection_timer")) {
       clearInterval(parseInt(localStorage.getItem("collection_timer") || "0"));
-      log.info("清除上一次的定时器");
+      CollectLog.info("清除上一次的定时器");
     }
     // 收集访问数据先执行一次再进入定时器
     collect.collectVisitData(ToolsConfig);
@@ -65,7 +67,7 @@ export default class LogCollectionTools {
     if (LogCollectionToolsConfig.isInit) {
       Collectioning(LogCollectionToolsConfig);
       // 已经读取到历史配置<蓝色>
-      log.info("已经读取到历史配置", LogCollectionToolsConfig);
+      CollectLog.info("已经读取到历史配置", LogCollectionToolsConfig);
     }
     if (!config || !config.isCollection) return;
     if (config.isCollection) {
@@ -75,7 +77,7 @@ export default class LogCollectionTools {
         }
       }
       LogCollectionToolsConfig.isInit = true;
-      log.info("初始化配置", LogCollectionToolsConfig);
+      CollectLog.info("初始化配置", LogCollectionToolsConfig);
       Collectioning(LogCollectionToolsConfig);
     }
   }
@@ -87,8 +89,12 @@ export default class LogCollectionTools {
           LogCollectionToolsConfig[key] = config[key];
         }
       }
-      log.info("刷新配置", LogCollectionToolsConfig);
+      CollectLog.info("刷新配置", LogCollectionToolsConfig);
       Collectioning(LogCollectionToolsConfig);
     }
   }
 }
+
+// 为了兼容老版本将原来的方法挂载到window上
+// @ts-ignore
+window.LogCollectionTools = new LogCollectionTools();

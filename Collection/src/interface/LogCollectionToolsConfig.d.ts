@@ -11,6 +11,8 @@ export interface LogCollectionToolsConfigInterface {
   collectionOnlineStatusTime: number;
   // 跳转页面时是否收集数据（精细）
   isCollectionVisitDataWhenJumpPage: boolean;
+  // 基础上传URL，数据收集服务器地址
+  baseUploadUrl: string;
 
   // ******** 收集数据上传请求配置 ********
   // 当前浏览器指纹

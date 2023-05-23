@@ -1,5 +1,5 @@
 /**
- * 获取IP地址
+ * 获取IP地址：这个需要通过RTCPeerConnection来获取，但是这个对象在不同的浏览器中的实现不一样，所以需要做兼容处理（比较复杂，用户不一定配合所以不采用，交给后端解决）
  */
 export default async function getIP(): Promise<string> {
   return new Promise((resolve, reject): any => {

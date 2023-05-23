@@ -14,9 +14,10 @@ var LogCollectionToolsConfig: LogCollectionToolsConfigInterface = {
   isCollectionVisitData: true,
   isCollectionErrorData: true,
   // 默认1分钟收集一次在线状态(不允许小于1分钟)
-  collectionOnlineStatusTime: 1000 * 10 * 1,
+  collectionOnlineStatusTime: 1000 * 60 * 1,
   isCollectionVisitDataWhenJumpPage: true,
   fingerprint: "",
+  baseUploadUrl: "http://172.21.212.48:7777"
 };
 
 function Collectioning(config: LogCollectionToolsConfigInterface) {
@@ -37,9 +38,11 @@ function Collectioning(config: LogCollectionToolsConfigInterface) {
   if (!ToolsConfig.isCollection) return;
   // 收集访问数据
   if (ToolsConfig.isCollectionVisitData) {
-    // if (ToolsConfig.collectionOnlineStatusTime < 1000 * 60 * 1) {
-    //   ToolsConfig.collectionOnlineStatusTime = 1000 * 60 * 1;
-    // }
+    if (ToolsConfig.collectionOnlineStatusTime < 1000 * 60 * 1) {
+      ToolsConfig.collectionOnlineStatusTime = 1000 * 60 * 1;
+      // 警告
+      CollectLog.warn("收集在线状态时间不允许小于1分钟，已经自动设置为1分钟。");
+    }
     // 清除上一次的定时器
     if (localStorage.getItem("collection_timer")) {
       clearInterval(parseInt(localStorage.getItem("collection_timer") || "0"));
@@ -52,14 +55,14 @@ function Collectioning(config: LogCollectionToolsConfigInterface) {
     }, ToolsConfig.collectionOnlineStatusTime);
     localStorage.setItem("collection_timer", timer.toString());
   }
-  // // 收集错误数据
-  // if (ToolsConfig.isCollectionErrorData) {
-  //   collect.collectErrorData(ToolsConfig);
-  // }
-  // // 收集页面跳转数据
-  // if (ToolsConfig.isCollectionVisitDataWhenJumpPage) {
-  //   collect.collectVisitDataWhenJumpPage(ToolsConfig);
-  // }
+  // 收集错误数据
+  if (ToolsConfig.isCollectionErrorData) {
+    collect.collectErrorData(ToolsConfig);
+  }
+  // 收集页面跳转数据
+  if (ToolsConfig.isCollectionVisitDataWhenJumpPage) {
+    collect.collectVisitDataWhenJumpPage(ToolsConfig);
+  }
 }
 
 export default class LogCollectionTools {

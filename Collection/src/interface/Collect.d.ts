@@ -10,7 +10,7 @@ export interface CollectInterface {
   // 收集页面跳转数据
   collectVisitDataWhenJumpPage(config: LogCollectionToolsConfigInterface): void;
   // 收集状态并上传
-  collectStatusAndUpload(config: CollectBrowserDataInterface): void;
+  collectStatusAndUpload(_config: LogCollectionToolsConfigInterface, CollectData: CollectBrowserDataInterface): void;
   // 用户触发收集
   collectUserTrigger(config: CollectUserDefinedInterface): void;
 
